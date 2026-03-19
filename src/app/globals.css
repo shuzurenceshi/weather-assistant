@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  min-height: 100vh;
+}
+
+/* 天气主题背景 */
+.weather-bg-sunny {
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+}
+
+.weather-bg-cloudy {
+  background: linear-gradient(135deg, #b2bec3 0%, #636e72 100%);
+}
+
+.weather-bg-rainy {
+  background: linear-gradient(135deg, #6c5ce7 0%, #0984e3 100%);
+}
+
+.weather-bg-snowy {
+  background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
+}
+
+.weather-bg-night {
+  background: linear-gradient(135deg, #2c3e50 0%, #1a1a2e 100%);
+}
+
+/* 卡片样式 */
+.weather-card {
+  @apply bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-4 mb-4;
+}
+
+/* 滚动条美化 */
+.scroll-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+}
+
+/* 助手消息气泡 */
+.assistant-bubble {
+  @apply bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl rounded-tl-sm p-4 shadow-md;
+}
+
+/* 预警动画 */
+@keyframes pulse-warning {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.warning-pulse {
+  animation: pulse-warning 2s ease-in-out infinite;
+}
