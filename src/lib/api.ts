@@ -22,11 +22,11 @@ export async function fetchWeather(lat: number, lon: number): Promise<WeatherDat
   return response.json();
 }
 
-// 逆地理编码 - 获取城市名
+// 逆地理编码 - 获取详细地址
 export async function fetchLocationName(lat: number, lon: number): Promise<string> {
   try {
     const response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=zh`
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=zh&zoom=14`
     );
     
     if (!response.ok) {
@@ -34,7 +34,34 @@ export async function fetchLocationName(lat: number, lon: number): Promise<strin
     }
     
     const data = await response.json();
-    return data.address?.city || data.address?.town || data.address?.county || '当前位置';
+    const addr = data.address || {};
+    
+    // 优先显示区/县 + 城市
+    const parts: string[] = [];
+    
+    // 省份（直辖市不显示）
+    if (addr.province && !addr.province.includes('北京') && !addr.province.includes('上海') && 
+        !addr.province.includes('天津') && !addr.province.includes('重庆')) {
+      // 不显示省份，太长
+    }
+    
+    // 城市
+    const city = addr.city || addr.town || addr.county || addr.district;
+    if (city) {
+      parts.push(city.replace('市', '').replace('区', '').replace('县', ''));
+    }
+    
+    // 区/街道
+    const district = addr.suburb || addr.borough || addr.neighbourhood;
+    if (district && district !== city) {
+      parts.push(district);
+    }
+    
+    if (parts.length > 0) {
+      return parts.slice(0, 2).join(' · ');
+    }
+    
+    return '当前位置';
   } catch {
     return '当前位置';
   }

@@ -6,10 +6,12 @@ import { fetchWeather, fetchLocationName } from '@/lib/api';
 import CurrentWeatherCard from '@/components/CurrentWeather';
 import AssistantMessage from '@/components/AssistantMessage';
 import HourlyForecast from '@/components/HourlyForecast';
+import DailyForecast from '@/components/DailyForecast';
 import ClothingAdvice from '@/components/ClothingAdvice';
 import TravelIndex from '@/components/TravelIndex';
 import WeatherAlert from '@/components/WeatherAlert';
 import EmailSubscribe from '@/components/EmailSubscribe';
+import MorningBriefing from '@/components/MorningBriefing';
 import Loading from '@/components/Loading';
 import LocationError from '@/components/LocationError';
 
@@ -114,11 +116,17 @@ export default function Home() {
           dailyLow={Math.round(weather.daily.temperature_2m_min[0])}
         />
         
+        {/* 早间播报 */}
+        <MorningBriefing data={weather} location={location} />
+        
         {/* 助理消息 */}
         <AssistantMessage message={assistantMessage} />
         
         {/* 48小时预报 */}
         <HourlyForecast hourly={weather.hourly} />
+        
+        {/* 7天温度趋势 */}
+        <DailyForecast daily={weather.daily} />
         
         {/* 穿衣建议 */}
         <ClothingAdvice current={weather.current} />
@@ -135,7 +143,7 @@ export default function Home() {
         
         {/* 底部信息 */}
         <div className="text-center text-white/60 text-xs mt-4">
-          数据来源: Open-Meteo · 更新时间: {new Date(weather.current.time).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
+          📍 {location} · 数据来源: Open-Meteo · 更新时间: {new Date(weather.current.time).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
         </div>
       </div>
     </main>
