@@ -23,7 +23,6 @@ export async function fetchWeather(lat: number, lon: number): Promise<WeatherDat
 // 逆地理编码 - 使用 BigDataCloud 免费 API（支持 CORS）
 export async function fetchLocationName(lat: number, lon: number): Promise<string> {
   try {
-    // BigDataCloud 免费 API，无需 key，支持 CORS
     const response = await fetch(
       `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=zh`
     );
@@ -34,20 +33,32 @@ export async function fetchLocationName(lat: number, lon: number): Promise<strin
     
     const data = await response.json();
     
-    // 组合地址：城市 + 区
+    // BigDataCloud 返回字段说明：
+    // city - 城市
+    // locality - 地区/区
+    // principalSubdivision - 省/直辖市
+    // countryName - 国家
+    
     const parts: string[] = [];
     
+    // 城市
     if (data.city) {
       parts.push(data.city);
-    } else if (data.locality) {
+    }
+    
+    // 区/县（locality 在中国通常是区）
+    if (data.locality && data.locality !== data.city) {
       parts.push(data.locality);
     }
     
-    if (data.principalSubdivision) {
-      // 省份，但如果已经有城市了就跳过
-      if (parts.length === 0) {
-        parts.push(data.principalSubdivision);
-      }
+    // 如果没有城市，用省
+    if (parts.length === 0 && data.principalSubdivision) {
+      parts.push(data.principalSubdivision);
+    }
+    
+    // 如果还是没有，用国家
+    if (parts.length === 0 && data.countryName) {
+      parts.push(data.countryName);
     }
     
     if (parts.length > 0) {

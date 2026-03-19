@@ -83,12 +83,12 @@ export function getWeatherDescription(code: number): string {
 // 获取天气图标
 export function getWeatherIcon(code: number, isDay: boolean = true): string {
   if (code === 0) return isDay ? '☀️' : '🌙';
-  if (code <= 3) return isDay ? '⛅' : '☁️';
-  if (code <= 48) return '🌫️';
-  if (code <= 67) return '🌧️';
-  if (code <= 77) return '🌨️';
-  if (code <= 82) return '🌦️';
-  if (code <= 86) return '🌨️';
+  if (code >= 1 && code <= 3) return isDay ? '⛅' : '☁️';
+  if (code >= 45 && code <= 48) return '🌫️';
+  if (code >= 51 && code <= 67) return '🌧️';
+  if (code >= 71 && code <= 77) return '🌨️';
+  if (code >= 80 && code <= 82) return '🌦️';
+  if (code >= 85 && code <= 86) return '🌨️';
   if (code >= 95) return '⛈️';
   return '🌤️';
 }
@@ -97,10 +97,10 @@ export function getWeatherIcon(code: number, isDay: boolean = true): string {
 export function getWeatherTheme(code: number, isDay: boolean = true): string {
   if (!isDay) return 'weather-bg-night';
   if (code === 0) return 'weather-bg-sunny';
-  if (code <= 3) return 'weather-bg-cloudy';
-  if (code <= 48) return 'weather-bg-cloudy';
-  if (code <= 67 || code <= 82) return 'weather-bg-rainy';
-  if (code <= 86) return 'weather-bg-snowy';
+  if (code >= 1 && code <= 3) return 'weather-bg-cloudy';
+  if (code >= 45 && code <= 48) return 'weather-bg-cloudy';
+  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return 'weather-bg-rainy';
+  if (code >= 71 && code <= 77 || code >= 85 && code <= 86) return 'weather-bg-snowy';
   return 'weather-bg-sunny';
 }
 
