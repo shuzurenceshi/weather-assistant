@@ -5,11 +5,16 @@ from email.mime.multipart import MIMEMultipart
 import json
 import urllib.request
 import sys
+import os
 from datetime import datetime
 
-# QQ邮箱配置
-SMTP_USER = "7961566@qq.com"
-SMTP_PASS = "wvdwcnbfjqkhcadb"
+# 从环境变量读取配置
+SMTP_USER = os.environ.get('SMTP_USER', '7961566@qq.com')
+SMTP_PASS = os.environ.get('SMTP_PASS', '')
+
+if not SMTP_PASS:
+    print("❌ 错误: 请设置环境变量 SMTP_PASS")
+    sys.exit(1)
 
 def send_email(to_email, alert_type, message, location):
     """发送预警邮件"""

@@ -4,11 +4,16 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import json
 import urllib.request
+import os
 from datetime import datetime
 
-# QQ邮箱配置
-SMTP_USER = "7961566@qq.com"
-SMTP_PASS = "wvdwcnbfjqkhcadb"
+# 从环境变量读取配置
+SMTP_USER = os.environ.get('SMTP_USER', '7961566@qq.com')
+SMTP_PASS = os.environ.get('SMTP_PASS', '')
+
+if not SMTP_PASS:
+    print("❌ 错误: 请设置环境变量 SMTP_PASS")
+    exit(1)
 
 def send_morning_briefing(email, location, weather_data):
     """发送早间/中午天气播报邮件"""
@@ -66,48 +71,6 @@ def send_morning_briefing(email, location, weather_data):
     else:
         greeting = "中午好"
         period = "午后天气"
-    
-    # 生成播报文案
-    content_lines = [
-        f"📍 {location}",
-        f"",
-        f"【{period}】",
-        f"{icon} {weather_name} · 当前 {temp}°C",
-        f"体感温度 {feels_like}°C · 湿度 {humidity}%",
-        f"",
-        f"🌡️ 今日温度：{low}°C ~ {high}°C",
-        f"",
-    ]
-    
-    # 紫外线提醒
-    if uv_index >= 6:
-        content_lines.append(f"☀️ 紫外线指数 {uv_index:.1f}，{'建议涂抹防晒霜' if uv_index < 8 else '注意防晒！'}")
-    else:
-        content_lines.append(f"☀️ 紫外线指数 {uv_index:.1f}，无需特别防护")
-    
-    # 降水提醒
-    if rain_prob > 50:
-        content_lines.append(f"☔ 降水概率 {rain_prob}%，出门请带伞")
-    elif rain_prob > 20:
-        content_lines.append(f"☔ 降水概率 {rain_prob}%，可能有雨")
-    
-    # 穿衣建议
-    if temp >= 30:
-        content_lines.append(f"👕 穿衣建议：短袖短裤，注意防晒")
-    elif temp >= 25:
-        content_lines.append(f"👕 穿衣建议：短袖/薄长袖")
-    elif temp >= 20:
-        content_lines.append(f"👕 穿衣建议：长袖衬衫")
-    elif temp >= 15:
-        content_lines.append(f"👕 穿衣建议：长袖+薄外套")
-    elif temp >= 10:
-        content_lines.append(f"👕 穿衣建议：毛衣/卫衣")
-    elif temp >= 5:
-        content_lines.append(f"👕 穿衣建议：厚外套")
-    else:
-        content_lines.append(f"👕 穿衣建议：羽绒服")
-    
-    content = "\n".join(content_lines)
     
     # 创建邮件
     msg = MIMEMultipart('alternative')
@@ -203,7 +166,6 @@ def send_morning_briefing(email, location, weather_data):
         server.sendmail(SMTP_USER, [email], msg.as_string())
     
     print(f"✅ 天气播报已发送到 {email}")
-
     return True
 
 def fetch_weather(lat, lon):

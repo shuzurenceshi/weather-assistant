@@ -2,10 +2,15 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import os
 from datetime import datetime
 
-SMTP_USER = "7961566@qq.com"
-SMTP_PASS = "wvdwcnbfjqkhcadb"
+SMTP_USER = os.environ.get('SMTP_USER', '7961566@qq.com')
+SMTP_PASS = os.environ.get('SMTP_PASS', '')
+
+if not SMTP_PASS:
+    print("❌ 错误: 请设置环境变量 SMTP_PASS")
+    exit(1)
 
 def send_test_email():
     msg = MIMEMultipart('alternative')
