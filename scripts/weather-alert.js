@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const https = require('https');
+const http = require('http');
 
 // QQ邮箱配置
 const transporter = nodemailer.createTransport({
@@ -13,9 +14,15 @@ const transporter = nodemailer.createTransport({
 });
 
 // 用户配置 - 从配置文件读取
-const users = require('./alert-users.json');
+let users = [];
+try {
+  users = require('./alert-users.json');
+} catch (e) {
+  console.error('无法读取用户配置:', e.message);
+  process.exit(1);
+}
 
-// 获取天气数据
+// 获取天气数据（使用 http 模块）
 async function fetchWeather(lat, lon) {
   const params = new URLSearchParams({
     latitude: lat.toString(),
@@ -28,23 +35,29 @@ async function fetchWeather(lat, lon) {
   });
 
   return new Promise((resolve, reject) => {
-    const url = `https://api.open-meteo.com/v1/forecast?${params}`;
-    console.log('请求:', url);
+    const url = `http://api.open-meteo.com/v1/forecast?${params}`;
     
-    https.get(url, (res) => {
+    const req = http.get(url, { timeout: 30000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
         try {
           resolve(JSON.parse(data));
         } catch (e) {
-          console.log('响应:', data.substring(0, 500));
+          console.error('解析天气数据失败:', e);
           reject(e);
         }
       });
-    }).on('error', (e) => {
-      console.log('请求错误:', e);
+    });
+    
+    req.on('error', (e) => {
+      console.error('请求天气API失败:', e.message);
       reject(e);
+    });
+    
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('请求超时'));
     });
   });
 }
@@ -102,6 +115,15 @@ function checkAlerts(weather) {
     });
   }
   
+  // 气温超过5°C提醒
+  if (current.temperature_2m > 5 && current.temperature_2m <= 10) {
+    alerts.push({
+      type: '降温提醒',
+      level: 'yellow',
+      message: `当前气温 ${current.temperature_2m}°C，早晚温差较大，请注意添衣！`,
+    });
+  }
+  
   return alerts;
 }
 
@@ -135,7 +157,7 @@ async function sendAlertEmail(user, alert, location) {
           <div class="header">
             <div class="icon">${levelEmoji}</div>
             <div class="title">${alert.type}</div>
-            <div class="location">📍 ${location}</div>
+            <div style="color: #666; font-size: 14px;">📍 ${location}</div>
           </div>
           <div class="content">
             <div class="alert-box">

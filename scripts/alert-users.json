@@ -1,9 +1,9 @@
 [
   {
     "email": "7961566@qq.com",
-    "location": "北京市海淀区",
-    "lat": 39.96,
-    "lon": 116.31,
+    "location": "河北石家庄",
+    "lat": 38.04,
+    "lon": 114.51,
     "enabled": true,
     "alerts": ["rain", "wind", "temperature", "severe"]
   }
