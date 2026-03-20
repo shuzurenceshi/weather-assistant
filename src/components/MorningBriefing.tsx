@@ -12,11 +12,13 @@ export default function MorningBriefing({ data, location }: MorningBriefingProps
   const daily = data.daily;
   const hourly = data.hourly;
   
-  // 今日天气
+  // 今日天气 - 使用当前实时天气
   const todayHigh = Math.round(daily.temperature_2m_max[0]);
   const todayLow = Math.round(daily.temperature_2m_min[0]);
-  const todayWeather = getWeatherDescription(daily.weather_code[0]);
-  const todayIcon = getWeatherIcon(daily.weather_code[0], true);
+  const todayWeather = getWeatherDescription(current.weather_code);
+  const hour = new Date().getHours();
+  const isDay = hour >= 6 && hour < 18;
+  const todayIcon = getWeatherIcon(current.weather_code, isDay);
   
   // 紫外线指数
   const uvIndex = daily.uv_index_max[0];
