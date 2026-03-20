@@ -169,11 +169,11 @@ def send_morning_briefing(email, location, weather_data):
                     <span class="value">{humidity}%</span>
                 </div>
                 <div class="detail-item">
-                    <span class="label">💨 鹿力</span>
+                    <span class="label">💨 风力</span>
                     <span class="value">{wind} km/h</span>
                 </div>
                 <div class="detail-item">
-                    <span class="label">☀️ 紫外線</span>
+                    <span class="label">☀️ 紫外线</span>
                     <span class="value">{uv_index:.1f}</span>
                 </div>
                 <div class="detail-item">
