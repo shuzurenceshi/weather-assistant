@@ -1,0 +1,10 @@
+[
+  {
+    "email": "7961566@qq.com",
+    "location": "北京市海淀区",
+    "lat": 39.96,
+    "lon": 116.31,
+    "enabled": true,
+    "alerts": ["rain", "wind", "temperature", "severe"]
+  }
+]
