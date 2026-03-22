@@ -185,45 +185,28 @@ export default function AdminPanel() {
           {/* 添加新订阅 */}
           <div className="bg-gray-50 rounded-xl p-4 mb-4">
             <div className="text-sm font-medium mb-2">➕ 添加订阅</div>
-            <div className="grid grid-cols-2 gap-2 mb-2">
+            <div className="flex gap-2 mb-2">
               <input
                 type="email"
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
-                placeholder="邮箱"
-                className="px-3 py-2 border rounded-lg text-sm"
+                placeholder="邮箱地址"
+                className="flex-1 px-3 py-2 border rounded-lg text-sm"
               />
               <input
                 type="text"
                 value={newLocation}
                 onChange={(e) => setNewLocation(e.target.value)}
-                placeholder="位置"
-                className="px-3 py-2 border rounded-lg text-sm"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-2 mb-2">
-              <input
-                type="number"
-                step="0.01"
-                value={newLat}
-                onChange={(e) => setNewLat(e.target.value)}
-                placeholder="纬度"
-                className="px-3 py-2 border rounded-lg text-sm"
-              />
-              <input
-                type="number"
-                step="0.01"
-                value={newLon}
-                onChange={(e) => setNewLon(e.target.value)}
-                placeholder="经度"
-                className="px-3 py-2 border rounded-lg text-sm"
+                placeholder="位置（如： 石家庄）"
+                className="flex-1 px-3 py-2 border rounded-lg text-sm"
               />
             </div>
             <button
               onClick={addSubscriber}
-              className="w-full py-2 bg-blue-500 text-white rounded-lg text-sm"
+              disabled={searching}
+              className="w-full py-2 bg-blue-500 text-white rounded-lg text-sm disabled:opacity-50"
             >
-              添加
+              {searching ? '查找位置中...' : '添加'}
             </button>
           </div>
 
