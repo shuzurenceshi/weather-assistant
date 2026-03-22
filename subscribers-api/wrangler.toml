@@ -1,0 +1,11 @@
+name = "weather-subscribers"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+ADMIN_PASSWORD = "weather@2024"
+
+# 可选：使用 KV 存储订阅数据
+# [[kv_namespaces]]
+# binding = "SUBSCRIBERS_KV"
+# id = "your_kv_namespace_id"
