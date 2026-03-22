@@ -32,8 +32,7 @@ export default function AdminPanel() {
   // 新订阅
   const [newEmail, setNewEmail] = useState('');
   const [newLocation, setNewLocation] = useState('');
-  const [newLat, setNewLat] = useState('');
-  const [newLon, setNewLon] = useState('');
+  const [searching, setSearching] = useState(false);
 
   const login = () => {
     if (password === ADMIN_PASSWORD) {
