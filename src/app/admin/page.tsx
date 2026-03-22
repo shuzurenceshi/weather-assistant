@@ -67,7 +67,7 @@ export default function AdminPage() {
     }
 
     try {
-      const res = await fetch('/api/subscribers/add', {
+      const res = await fetch('https://weather-subscribers.shuzurenceshi.workers.dev/api/subscribers/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
