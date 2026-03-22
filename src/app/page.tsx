@@ -144,6 +144,10 @@ export default function Home() {
         {/* 底部信息 */}
         <div className="text-center text-white/60 text-xs mt-4">
           📍 {location} · 数据来源: Open-Meteo · 更新时间: {new Date(weather.current.time).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
+          <br />
+          <a href="https://weather-subscribers.shuzurenceshi.workers.dev" className="text-white/80 hover:text-white underline">
+            订阅管理
+          </a>
         </div>
       </div>
     </main>
