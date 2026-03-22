@@ -62,11 +62,28 @@ export default function AdminPanel() {
   };
 
   const addSubscriber = async () => {
-    if (!newEmail || !newLocation || !newLat || !newLon) {
-      alert('请填写完整信息');
+    if (!newEmail || !newLocation) {
+      alert('请填写邮箱和位置');
       return;
     }
+    
+    setSearching(true);
     try {
+      // 使用 Open-Meteo 的地理编码 API 获取经纬度
+      const geoRes = await fetch(
+        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(newLocation)}&count=1&language=zh`
+      );
+      const geoData = await geoRes.json();
+      
+      if (!geoData.results || geoData.results.length === 0) {
+        alert('无法找到该位置，请尝试其他名称');
+        setSearching(false);
+        return;
+      }
+      
+      const { latitude, longitude, name, admin1 } = geoData.results[0];
+      const fullLocation = admin1 ? `${admin1}${name}` : name;
+      
       const res = await fetch(`${API_URL}/api/subscribers/add`, {
         method: 'POST',
         headers: {
@@ -75,9 +92,9 @@ export default function AdminPanel() {
         },
         body: JSON.stringify({
           email: newEmail,
-          location: newLocation,
-          lat: parseFloat(newLat),
-          lon: parseFloat(newLon),
+          location: fullLocation,
+          lat: latitude,
+          lon: longitude,
         }),
       });
       const data = await res.json();
@@ -85,14 +102,14 @@ export default function AdminPanel() {
         loadSubscribers();
         setNewEmail('');
         setNewLocation('');
-        setNewLat('');
-        setNewLon('');
-        alert('添加成功！');
+        alert(`添加成功！位置: ${fullLocation}`);
       } else {
         alert(data.error || '添加失败');
       }
     } catch (e) {
       alert('添加失败');
+    } finally {
+      setSearching(false);
     }
   };
 
