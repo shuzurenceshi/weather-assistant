@@ -98,7 +98,7 @@ export default function AdminPage() {
     if (!confirm(`确定要删除 ${email} 的订阅吗？`)) return;
 
     try {
-      const res = await fetch('/api/subscribers/delete', {
+      const res = await fetch('https://weather-subscribers.shuzurenceshi.workers.dev/api/subscribers/delete', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
