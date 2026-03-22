@@ -46,7 +46,7 @@ export default function AdminPage() {
   const loadSubscribers = async (authToken: string) => {
     setLoading(true);
     try {
-      const res = await fetch('/api/subscribers', {
+      const res = await fetch('https://weather-subscribers.shuzurenceshi.workers.dev/api/subscribers', {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       const data = await res.json();
