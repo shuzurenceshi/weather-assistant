@@ -14,6 +14,7 @@ import EmailSubscribe from '@/components/EmailSubscribe';
 import MorningBriefing from '@/components/MorningBriefing';
 import Loading from '@/components/Loading';
 import LocationError from '@/components/LocationError';
+import AdminPanel from '@/components/AdminPanel';
 
 export default function Home() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
