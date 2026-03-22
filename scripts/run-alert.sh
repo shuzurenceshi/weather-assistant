@@ -6,7 +6,7 @@ export SMTP_USER="7961566@qq.com"
 export SMTP_PASS="wvdwcnbfjqkhcadb"
 
 # 刿alia化脚本路径
-SCRIPT_DIR="/root/weather-assistant/scripts"
+SCRIPT_DIR="/root/projects/myapp/weather-assistant/scripts"
 
 # 运行 Python 脚本
 cd "$SCRIPT_DIR"
