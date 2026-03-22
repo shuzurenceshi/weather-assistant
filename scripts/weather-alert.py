@@ -147,7 +147,7 @@ def main():
     
     # 读取用户配置
     try:
-        with open('/root/weather-assistant/scripts/alert-users.json', 'r') as f:
+        with open('/root/projects/myapp/weather-assistant/scripts/alert-users.json', 'r') as f:
             users = json.load(f)
     except Exception as e:
         print(f"❌ 无法读取用户配置: {e}")
