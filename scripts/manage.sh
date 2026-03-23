@@ -62,7 +62,7 @@ run_alert() {
     echo "🚀 执行天气预警检查..."
     cd "$SCRIPT_DIR"
     export SMTP_USER="7961566@qq.com"
-    export SMTP_PASS="wvdwcnbfjqkhcadb"
+    export SMTP_PASS="bxdmwoxuiceobjjg"
     python3 weather-alert.py
 }
 
