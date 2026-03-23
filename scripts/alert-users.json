@@ -12,19 +12,5 @@
       "severe"
     ],
     "createdAt": "2024-03-23"
-  },
-  {
-    "email": "newuser@test.com",
-    "location": "上海",
-    "lat": 31.22222,
-    "lon": 121.45806,
-    "enabled": true,
-    "alerts": [
-      "rain",
-      "wind",
-      "temperature",
-      "severe"
-    ],
-    "createdAt": "2026-03-23"
   }
 ]
