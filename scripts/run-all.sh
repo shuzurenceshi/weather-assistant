@@ -2,7 +2,7 @@
 
 # 设置环境变量
 export SMTP_USER="7961566@qq.com"
-export SMTP_PASS="wvdwcnbfjqkhcadb"
+export SMTP_PASS="bxdmwoxuiceobjjg"
 
 cd /root/weather-assistant
 python3 scripts/daily-briefing.py
