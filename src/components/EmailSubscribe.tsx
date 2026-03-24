@@ -8,7 +8,7 @@ interface EmailSubscribeProps {
   longitude?: number;
 }
 
-const API_URL = 'https://subscribers-api.weather-assistant.workers.dev';
+const API_URL = 'https://weather-subscribers.shuzurenceshi.workers.dev';
 
 export default function EmailSubscribe({ currentLocation, latitude, longitude }: EmailSubscribeProps) {
   const [isOpen, setIsOpen] = useState(false);
