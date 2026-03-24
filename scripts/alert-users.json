@@ -12,5 +12,19 @@
       "severe"
     ],
     "createdAt": "2024-03-23"
+  },
+  {
+    "email": "feiyue1022@gmail.com",
+    "location": "河北石家庄",
+    "lat": 38.04139,
+    "lon": 114.47861,
+    "enabled": true,
+    "alerts": [
+      "rain",
+      "wind",
+      "temperature",
+      "severe"
+    ],
+    "createdAt": "2026-03-24"
   }
 ]
