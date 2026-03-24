@@ -19,13 +19,10 @@ import AdminPanel from '@/components/AdminPanel';
 export default function Home() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [location, setLocation] = useState('定位中...');
+  const [coords, setCoords] = useState<{ lat: number; lon: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [assistantMessage, setAssistantMessage] = useState('');
-  
-  // 邮件订阅状态
-  const [savedEmail, setSavedEmail] = useState<string | undefined>();
-  const [savedAlerts, setSavedAlerts] = useState<string[] | undefined>();
   
   useEffect(() => {
     // 从 localStorage 读取保存的订阅信息
