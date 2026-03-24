@@ -135,9 +135,9 @@ export default function Home() {
         
         {/* 预警订阅 */}
         <EmailSubscribe
-          onSave={handleSaveSubscription}
-          savedEmail={savedEmail}
-          savedAlerts={savedAlerts}
+          currentLocation={location}
+          latitude={coords?.lat}
+          longitude={coords?.lon}
         />
         
         {/* 底部信息 */}
