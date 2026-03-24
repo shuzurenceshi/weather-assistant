@@ -25,12 +25,6 @@ export default function Home() {
   const [assistantMessage, setAssistantMessage] = useState('');
   
   useEffect(() => {
-    // 从 localStorage 读取保存的订阅信息
-    const email = localStorage.getItem('weather-alert-email');
-    const alerts = localStorage.getItem('weather-alert-types');
-    if (email) setSavedEmail(email);
-    if (alerts) setSavedAlerts(JSON.parse(alerts));
-    
     // 获取天气数据
     loadWeather();
   }, []);
