@@ -78,13 +78,6 @@ export default function Home() {
     }
   };
   
-  const handleSaveSubscription = (email: string, alerts: string[]) => {
-    localStorage.setItem('weather-alert-email', email);
-    localStorage.setItem('weather-alert-types', JSON.stringify(alerts));
-    setSavedEmail(email);
-    setSavedAlerts(alerts);
-  };
-  
   if (loading) {
     return <Loading />;
   }
