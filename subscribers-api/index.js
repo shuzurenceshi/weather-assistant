@@ -151,6 +151,98 @@ export default {
       });
     }
 
+    // 公开订阅接口（无需认证）
+    if (path === '/api/public/subscribe' && request.method === 'POST') {
+      const body = await request.json();
+      
+      if (!body.email || !body.location) {
+        return new Response(JSON.stringify({ error: '请填写邮箱和位置' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
+      // 验证邮箱格式
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(body.email)) {
+        return new Response(JSON.stringify({ error: '请输入有效的邮箱地址' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
+      const newSubscriber = {
+        email: body.email.toLowerCase(),
+        location: body.location,
+        lat: body.lat || 0,
+        lon: body.lon || 0,
+        enabled: true,
+        alerts: body.alerts || ["rain", "wind", "temperature", "severe"],
+        createdAt: new Date().toISOString().split('T')[0],
+        source: 'website'
+      };
+
+      let subscribers = await getSubscribers();
+      
+      // 检查是否已订阅
+      const existingIndex = subscribers.findIndex(s => s.email === newSubscriber.email);
+      if (existingIndex >= 0) {
+        // 更新现有订阅
+        subscribers[existingIndex] = { ...subscribers[existingIndex], ...newSubscriber };
+        await saveSubscribers(subscribers);
+        return new Response(JSON.stringify({ 
+          success: true, 
+          message: '订阅信息已更新',
+          subscriber: { email: newSubscriber.email, location: newSubscriber.location }
+        }), {
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
+      subscribers.push(newSubscriber);
+      await saveSubscribers(subscribers);
+
+      return new Response(JSON.stringify({ 
+        success: true, 
+        message: '订阅成功',
+        subscriber: { email: newSubscriber.email, location: newSubscriber.location }
+      }), {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
+    }
+
+    // 公开退订接口（无需认证）
+    if (path === '/api/public/unsubscribe' && request.method === 'POST') {
+      const body = await request.json();
+      
+      if (!body.email) {
+        return new Response(JSON.stringify({ error: '请提供邮箱地址' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+
+      let subscribers = await getSubscribers();
+      const initialLength = subscribers.length;
+      subscribers = subscribers.filter(s => s.email.toLowerCase() !== body.email.toLowerCase());
+      
+      if (subscribers.length === initialLength) {
+        return new Response(JSON.stringify({ error: '该邮箱未订阅' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        });
+      }
+      
+      await saveSubscribers(subscribers);
+
+      return new Response(JSON.stringify({ 
+        success: true, 
+        message: '退订成功'
+      }), {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
+    }
+
     // 测试邮件 - 调用服务器端发送
     if (path === '/api/test-email' && request.method === 'POST') {
       if (!checkAuth(request)) {
