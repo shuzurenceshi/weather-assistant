@@ -91,6 +91,23 @@ export default function Home() {
   return (
     <main className={`min-h-screen ${bgTheme} p-4 pb-20`}>
       <div className="max-w-md mx-auto">
+        {/* 顶部订阅横幅 */}
+        <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-3 mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-white">
+            <span className="text-xl">📧</span>
+            <span className="text-sm">订阅天气预警，恶劣天气提前通知</span>
+          </div>
+          <button 
+            onClick={() => {
+              const el = document.getElementById('subscribe-section');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="bg-white text-blue-600 px-4 py-1.5 rounded-full text-sm font-medium"
+          >
+            立即订阅
+          </button>
+        </div>
+        
         {/* 预警信息 */}
         <WeatherAlert data={weather} />
         
@@ -121,11 +138,13 @@ export default function Home() {
         <TravelIndex data={weather} />
         
         {/* 预警订阅 */}
-        <EmailSubscribe
-          currentLocation={location}
-          latitude={coords?.lat}
-          longitude={coords?.lon}
-        />
+        <div id="subscribe-section">
+          <EmailSubscribe
+            currentLocation={location}
+            latitude={coords?.lat}
+            longitude={coords?.lon}
+          />
+        </div>
         
         {/* 底部信息 */}
         <div className="text-center text-white/60 text-xs mt-4">
