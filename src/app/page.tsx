@@ -50,6 +50,7 @@ export default function Home() {
       });
       
       const { latitude, longitude } = position.coords;
+      setCoords({ lat: latitude, lon: longitude });
       
       // 并行获取天气和位置名
       const [weatherData, locationName] = await Promise.all([
