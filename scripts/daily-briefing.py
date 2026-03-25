@@ -168,17 +168,29 @@ def send_morning_briefing(email, location, weather_data):
     print(f"✅ 天气播报已发送到 {email}")
     return True
 
-def fetch_weather(lat, lon):
-    """获取天气数据"""
+def fetch_weather(lat, lon, max_retries=3):
+    """获取天气数据（带重试机制）"""
+    import ssl
+    import time
+    
     url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&hourly=precipitation_probability&daily=temperature_2m_max,temperature_2m_min,weather_code,uv_index_max&timezone=auto&forecast_days=1"
     
-    try:
-        with urllib.request.urlopen(url, timeout=30) as response:
-            data = json.loads(response.read().decode())
-            return data
-    except Exception as e:
-        print(f"❌ 获取天气失败: {e}")
-        return None
+    # 创建 SSL 上下文
+    ssl_context = ssl.create_default_context()
+    
+    for attempt in range(max_retries):
+        try:
+            with urllib.request.urlopen(url, timeout=30, context=ssl_context) as response:
+                data = json.loads(response.read().decode())
+                return data
+        except Exception as e:
+            if attempt < max_retries - 1:
+                wait_time = (attempt + 1) * 5  # 5s, 10s, 15s
+                print(f"⚠️ 第 {attempt + 1} 次尝试失败: {e}，{wait_time}秒后重试...")
+                time.sleep(wait_time)
+            else:
+                print(f"❌ 获取天气失败（已重试 {max_retries} 次）: {e}")
+                return None
 
 def main():
     print(f"🌤️ 天气播报开始...")
